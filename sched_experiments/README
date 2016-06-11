@@ -8,9 +8,9 @@ Start up:
 2. $ cd /root/images
 
 to run credit:
-$ ./xen2_full_vm.sh
+$ ./xen2_full_vm.sh 1 2
 to run rtds:
-$ ./rtxen2_full.sh
+$ ./rtxen2_full.sh 1 2
 
 
 to find ip address of VMs:
@@ -38,7 +38,7 @@ $ nano /root/liblitmus/mytools/myapp.c change loopcount to 480
 $ make
 
 
-VM2:
+ssh into VM2:
 
 $ cd /root/hypervisor_experiments
 
@@ -50,10 +50,10 @@ base on what you want to run, change util, periods , duration ,iteration in reru
 
 $ ./rerun.sh
 
-leave VM2
+exit VM2
 
 
-VM1:
+ssh into VM1:
 
 $ cd /root/hypervisor_experiments
 

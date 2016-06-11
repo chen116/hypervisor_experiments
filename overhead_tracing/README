@@ -3,16 +3,25 @@ To switch around credit and rtds:
 $ nano /boot/grub/grub.cfg
 comment/uncomment the line with rtds/credit and then reboot. ( make sure domUs are all shutdown when reboot)
 
-need to replace schedule.c with schedule.c and then rebuild xen (http://wiki.xenproject.org/wiki/Compiling_Xen_From_Source) 
+need to replace /root/xen-4.5.0/xen/common/schedule.c with /root/hypervisor_experiments/schedule.c and then rebuild xen (http://wiki.xenproject.org/wiki/Compiling_Xen_From_Source) 
+
+$ cd /root/xen-4.5.0
+$ nano /boot/grub/grub.cfg    (change either rtds/credit from dom0_max_vcpus=1 to dom0_max_vcpus=16 vcpu for faster build)
+$ reboot
+$ make dist -j116 && make world -j16 && make install -j16
+$ reboot
+
+
+
 
 Start up:
 1. $ service xencommons start
 2. $ cd /root/images
 
 to run credit:
-$ ./xen2_full_vm.sh
+$ ./xen2_full_vm.sh 1 2
 to run rtds:
-$ ./rtxen2_full.sh
+$ ./rtxen2_full.sh 1 2
 
 to find ip address of VMs:
 
@@ -40,15 +49,38 @@ $ make
 
 
 
+ssh into VM2:
+
+$ cd /root/hypervisor_experiments
+
+$ git pull
+
+$ cd /root/hypervisor_experiments/overhead_tracing
+
+base on what you want to run, change util, periods , duration ,iteration in rerun.sh, run_ratio.sh, run_bench_Array_granular.sh
+
+$ ./rerun.sh
+
+exit VM2
+
+in Dom0:
+
 $ cd /root/hypervisor_experiments
 
 $ git pull
 
 
 
-1. make sure you can ssh without password between Dom0 and VM1 ( it should be) (http://www.linuxproblem.org/art_9.html)
+1. make sure you can ssh without password between Dom0 and VM1 ( I have set it up) (http://www.linuxproblem.org/art_9.html)
 2. change the ip addr in overhead_tracing/hyper_ovm.sh to VM1's ip
 3. ssh into VM2 and change the duration (secs) in sched_experiments/rerun.sh to a larger number
 4. from Dom0, $ bash hyper_ovm.sh
+
+
+To plot:
+
+$ python organize.py {ovm_files_folder}
+
+take the output from the console for events count and time and put into the graph_ovm.m to graph.
 
 
