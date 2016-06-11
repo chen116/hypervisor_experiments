@@ -1,22 +1,21 @@
 Dom0 setup:
 To switch around credit and rtds:
 $ nano /boot/grub/grub.cfg
-comment/uncomment the line with rtds/credit and then reboot. ( make sure domUs are all shutdown)
+comment/uncomment the line with rtds/credit and then reboot. ( make sure domUs are all shutdown when reboot)
 
 Start up:
 1. $ service xencommons start
 2. $ cd /root/images
-3. xl create ubuntu_image.cfg
-4. xl create 2nd_ubuntu_image.cfg
+
+to run credit:
+$ ./xen2_full_vm.sh
+to run rtds:
+$ ./rtxen2_full.sh
+
 
 to find ip address of VMs:
 
 $ arp -an
-
-to run credit:
-$ ./xen_2_full_vm.sh
-to run rtds:
-$ ./2rtxen_full.sh
 
 
 in both VMs
@@ -41,9 +40,9 @@ $ make
 
 VM2:
 
-$ cd /root/
+$ cd /root/hypervisor_experiments
 
-$ git clone https://github.com/chen116/hypervisor_experiments.git
+$ git pull
 
 cd hypervisor_experiments/sched_experiments
 
@@ -56,9 +55,9 @@ leave VM2
 
 VM1:
 
-$ cd /root/
+$ cd /root/hypervisor_experiments
 
-$ git clone https://github.com/chen116/hypervisor_experiments.git
+$ git pull
 
 cd hypervisor_experiments/sched_experiments
 
@@ -70,7 +69,7 @@ $ ./rerun.sh
 
 when the experiemtn is done,
 
-$ mv run-data/myapp/*ratio* ./{folder_you_create}
+$ mv run-data/myapp/*ratio ./{folder_you_create}
 
 To plot in MATLAB,
 
