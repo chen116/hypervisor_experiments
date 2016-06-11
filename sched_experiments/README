@@ -28,13 +28,13 @@ $ screen
 For xen-credit:
 
 $ cd /root/liblitmus/mytools
-$ nano /root/liblitmus/mytools/myapp.c change loopcount to 450
+$ nano /root/liblitmus/mytools/myapp.c change loopcount to 480
 $ make
 
 For xen-rtds:
 
 $ cd /root/liblitmus/mytools
-$ nano /root/liblitmus/mytools/myapp.c change loopcount to 480
+$ nano /root/liblitmus/mytools/myapp.c change loopcount to 450
 $ make
 
 
