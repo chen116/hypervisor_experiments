@@ -1170,6 +1170,8 @@ static void schedule(void)
     spinlock_t           *lock;
     struct task_slice     next_slice;
     int cpu = smp_processor_id();
+    s_time_t vic_before_sched;
+    s_time_t vic_after_sched;
 
     ASSERT_NOT_IN_ATOMIC();
 
@@ -1200,8 +1202,12 @@ static void schedule(void)
     
     /* get policy-specific decision on scheduling... */
     sched = this_cpu(scheduler);
+    vic_before_sched = NOW();
     next_slice = sched->do_schedule(sched, now, tasklet_work_scheduled);
-
+    vic_after_sched = NOW();
+    TRACE_2D(TRC_SCHED_SWITCH_INFPREV,
+             99,
+             vic_after_sched - vic_before_sched);
     next = next_slice.task;
 
     sd->curr = next;
