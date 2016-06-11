@@ -1,0 +1,79 @@
+Dom0 setup:
+To switch around credit and rtds:
+$ nano /boot/grub/grub.cfg
+comment/uncomment the line with rtds/credit and then reboot. ( make sure domUs are all shutdown)
+
+Start up:
+1. $ service xencommons start
+2. $ cd /root/images
+3. xl create ubuntu_image.cfg
+4. xl create 2nd_ubuntu_image.cfg
+
+to find ip address of VMs:
+
+$ arp -an
+
+to run credit:
+$ ./xen_2_full_vm.sh
+to run rtds:
+$ ./2rtxen_full.sh
+
+
+in both VMs
+
+$ screen
+
+(press crtl + A , hold the crtl, then press D to swtich back)
+(exit to close the screen session)
+
+For xen-credit:
+
+$ cd /root/liblitmus/mytools
+$ nano /root/liblitmus/mytools/myapp.c change loopcount to 450
+$ make
+
+For xen-rtds:
+
+$ cd /root/liblitmus/mytools
+$ nano /root/liblitmus/mytools/myapp.c change loopcount to 480
+$ make
+
+
+VM2:
+
+$ cd /root/
+
+$ git clone https://github.com/chen116/hypervisor_experiments.git
+
+cd hypervisor_experiments/sched_experiments
+
+base on what you want to run, change util, periods , duration ,iteration in rerun.sh, run_ratio.sh, run_bench_Array_granular.sh
+
+$ ./rerun.sh
+
+leave VM2
+
+
+VM1:
+
+$ cd /root/
+
+$ git clone https://github.com/chen116/hypervisor_experiments.git
+
+cd hypervisor_experiments/sched_experiments
+
+base on what you want to run, change util, periods , iteration in rerun.sh, run_ratio.sh, run_bench_Array_granular.sh
+
+to run the experiments:
+
+$ ./rerun.sh
+
+when the experiemtn is done,
+
+$ mv run-data/myapp/*ratio* ./{folder_you_create}
+
+To plot in MATLAB,
+
+put {foler_you_create} into the same directory as plot_experiments.m and then change plot_experiments.m accordingly
+
+run plot_experiments.m

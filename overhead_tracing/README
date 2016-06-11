@@ -1,0 +1,34 @@
+Dom0 setup:
+To switch around credit and rtds:
+$ nano /boot/grub/grub.cfg
+comment/uncomment the line with rtds/credit and then reboot. ( make sure domUs are all shutdown)
+
+need to replace schedule.c with schedule.c and then rebuild xen (http://wiki.xenproject.org/wiki/Compiling_Xen_From_Source) 
+
+Start up:
+1. $ service xencommons start
+2. $ cd /root/images
+3. xl create ubuntu_image.cfg
+4. xl create 2nd_ubuntu_image.cfg
+
+to find ip address of VMs:
+
+$ arp -an
+
+to run credit:
+$ ./xen_2_full_vm.sh
+to run rtds:
+$ ./2rtxen_full.sh
+
+
+$ git clone https://github.com/chen116/hypervisor_experiments.git
+
+cd hypervisor_experiments
+
+0. make sure both VMs have git clone https://github.com/chen116/hypervisor_experiments.git at /root/
+1. make sure you set up ssh without password between Dom0 and VM1 (http://www.linuxproblem.org/art_9.html)
+2. change the ip addr in overhead_tracing/hyper_ovm.sh to VM1's ip
+3. ssh into VM2 and change the duration (secs) in sched_experiments/rerun.sh to a larger number
+4. from Dom0, $ bash hyper_ovm.sh
+
+
