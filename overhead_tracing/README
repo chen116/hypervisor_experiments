@@ -11,6 +11,12 @@ $ reboot
 $ make dist -j116 && make world -j16 && make install -j16
 $ reboot
 
+* uni-light task utilization: uniform distribution from (0.001,0.1)
+* uni-medium task utilization: uniform distribution from (0.1,0.4)
+* uni-heavy task utilization: uniform distribution from (0.5,0.9)
+* bimo-medium task utilization: uniform distribution 66% from (0.001,0.5), 33% from (0.5,0.9)
+* uni-moderate period distribution: uniform distribution from (10ms,100ms)
+* uni-longRTXen period distribution: uniform distribution from (350ms,850ms)
 
 
 

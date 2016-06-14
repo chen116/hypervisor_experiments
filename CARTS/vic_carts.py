@@ -20,18 +20,12 @@ import glob
 from pprint import pprint
 carted = 0
 arg_index = 0
-threshold = -1
+
 
 INPUTFILE = ""
 for arg in sys.argv:
 	if(arg=='-carted'):
 		carted=1
-	elif(arg_index==1):
-		INPUTFILE = arg
-	elif(arg_index!=0):
- 		threshold = float(arg)
-	arg_index += 1
-
 
 # from termcolor import colored
 
@@ -93,7 +87,16 @@ def read_CARTS_Output():
 			# print VCPU_budgets,VCPU_periods,VCPU_deadlines
 			vmParamDict[item.attrib["name"]]=[VCPU_budgets,VCPU_periods,VCPU_deadlines]
 
-		# print vmParamDict
+# vmParamDict in function read_CARTS_Output() gives you each vcpu's 'execution_time' , 'period' , 'deadline'
+# now you can operate on vmParamDict with file names to get the information you want
+# the code below print out you if each taskset file can satisfy the total task utilization
+# for example:
+# the output:
+# {'bl': {'0.2': [1.0, 25],
+#     	}
+# }
+# tells you that for all 25 bimo-medium light task utilization with total util of 0.2, 1*100% of the tasksets file is able to run with 1VCPU according to CARTS outputfiles
+
 		avg=0
 		for i in range(0,len(vmParamDict['vm1'][0])):
 			avg+=float(vmParamDict['vm1'][0][i])/float(vmParamDict['vm1'][1][i])
@@ -158,70 +161,6 @@ def read_CARTS_Output():
 			
 			#print rate
 	pprint(schd)
-	# if(threshold==-1):
-	# 	maxx = max(vm_required_cpus_list)
-	# 	minn = min(vm_required_cpus_list)
-	# 	maxx_index = [i for i, j in enumerate(vm_required_cpus_list) if j == maxx]
-	# 	minn_index = [i for i, j in enumerate(vm_required_cpus_list) if j == minn]
-	# 	print 'max cpus:' + str(maxx)
-	# 	for index in maxx_index:
-	# 		print output_files_names[index]
-	# 	print 'min cpus:' + str(minn)
-	# 	for index in minn_index:
-	# 		print output_files_names[index]
-	# else:
-	# 	threshold_index = [i for i, j in enumerate(vm_required_cpus_list) if j > threshold]
-	# 	print 'taskset that exceed: '+str(threshold)
-	# 	for index in threshold_index:
-	# 		print output_files_names[index]+" : "+str(vm_required_cpus_list[index])
-
-
-
-def find_max_min_or_threshold_from_CARTS_output():
-	if(carted):
-		os.chdir(CARTS_OUTPUT_FILE)
-		for file in glob.glob("*"+INPUTFILE+"*"):
-		    output_files_names.append(file)
-	vm_required_cpus_list = []
-	for files in output_files_names:
-		
-	        
-		with open(files) as f:
-			content = f.readlines()	
-		see_cpus = 0
-		vm_required_cpus = -1
-		if_sched = 0
-
-		j=0
-		while vm_required_cpus<0:
-			if 'cpus' in content[j]:
-				line = content[j]
-				if see_cpus == 1:
-					vm_required_cpus = int(line[13])
-					if vm_required_cpus == 1:
-						if line[14]!='"':
-							vm_required_cpus=10+int(line[14])
-					vm_required_cpus_list.append(int(vm_required_cpus))
-				elif see_cpus == 0:
-					if_sched = int(line[13])
-				see_cpus = see_cpus+1
-			j=j+1
-	if(threshold==-1):
-		maxx = max(vm_required_cpus_list)
-		minn = min(vm_required_cpus_list)
-		maxx_index = [i for i, j in enumerate(vm_required_cpus_list) if j == maxx]
-		minn_index = [i for i, j in enumerate(vm_required_cpus_list) if j == minn]
-		print 'max cpus:' + str(maxx)
-		for index in maxx_index:
-			print output_files_names[index]
-		print 'min cpus:' + str(minn)
-		for index in minn_index:
-			print output_files_names[index]
-	else:
-		threshold_index = [i for i, j in enumerate(vm_required_cpus_list) if j >= threshold]
-		print 'taskset that exceed: '+threshold
-		for index in threshold_index:
-			print output_files_names[index]+" : "+str(vm_required_cpus_list[index])
 
 
 def read_tasksets():
@@ -339,10 +278,8 @@ if __name__ == "__main__":
 	if(carted==0):
 		read_tasksets()
 		run_CARTS_all()
-		# read_CARTS_Output()
 
 	else:
-	# find_max_min_or_threshold_from_CARTS_output()
 
 		read_CARTS_Output()
 
