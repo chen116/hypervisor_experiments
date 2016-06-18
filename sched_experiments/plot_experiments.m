@@ -5,24 +5,31 @@ clear
 
 % make sure they have same length in char counts
 % gives vm folder names
+
+
+
+% folders for the schedulability ratio files
 vms = cellstr(['rtxen_2vm   ';...
                'xen_2vm_t_30';...
                'xen_2vm_t_1 ']);
+% names of the schedulability ratio files
 dists = cellstr([
                  'uni-medium_uni-moderate_ratio';...
                  'uni-light_uni-moderate_ratio ';...
                  ]);
+% pdf name for the plots
 file_dists = cellstr([
                      'medium-2vm_null_yes ';...
                      'light-2vm_null_yes  ';...
                  ]);
+% title for the plots
 dists_title = cellstr([                          
                       'Medium Task Utilization (0.1, 0.4) ';...
                       'Light Task Utilization (0.001, 0.1)'
                   ]);
-%change xaxis accordingly
+% total util rates used
 %xaxis=[0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2 2.2 2.4 2.6 2.8 3 3.2 3.4 3.6 3.8 4 4.2];
-xaxis=[0.4 1 1.4 2 2.4 3 3.4 4];
+xaxis=[0.4 1 1.4 2 2.4 3 3.4 4]; % make sure this matches with the total util rates you are using
 %xaxis=[4 4.2 4.4 4.6 4.8 5];
 % lw=[8,8,8,8,8,8,3,3,3];
 % ms=[8,8,8,8,8,8,6,6,6];
@@ -62,16 +69,7 @@ h=figure
             tline = fgets(fid);
         end
         fclose(fid);
-        if(i<length(vms))
-            schdublilty(i,:) = (suc./sum)';
-        else
-            schdublilty(i,:) = (suc./sum)';
-            for kk = 1:length(schdublilty(i,:))
-                if((schdublilty(i,kk)<0))
-                    schdublilty(i,kk)=0;
-                end
-            end
-        end
+        schdublilty(i,:) = (suc./sum)';
 
         %subplot(2,2,j);
         plot(xaxis,schdublilty(i,:),ls{i},'LineWidth',lw(i),'MarkerSize',ms(i))
