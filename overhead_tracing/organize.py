@@ -5,20 +5,26 @@ files = os.listdir(str(sys.argv[1]))
 # print files
 
 util = range(1,9)
-long_cnt = []
-long_time = []
-mod_cnt = []
-mod_time = []
-i=0
+long_cnt = {}
+long_time = {}
+mod_cnt = {}
+mod_time = {}
+
+
 targets = ["bimo","heavy","uni-medium","light"]
+
+target_f_long=[]
+target_f_mod=[]
+
 for target in targets:
+	long_cnt[target]=[]
+	long_time[target]=[]	
+	mod_cnt[target]=[]
+	mod_time[target]=[]
 	target_f_long=[]
 	target_f_mod=[]
 
-	long_cnt.append([])
-	long_time.append([])
-	mod_cnt.append([])
-	mod_time.append([])
+
 
 	for file in files:
 		file = str(sys.argv[1]) +'/'+file
@@ -35,9 +41,9 @@ for target in targets:
 		with open(file, "r") as ins:
 			for line in ins:
 				if 'num' in line:
-					long_cnt[i].append(int(line.split(':')[1]))
+					long_cnt[target].append(int(line.split(':')[1]))
 				if 'overhead' in line:
-					long_time[i].append(int(line.split(':')[1]))
+					long_time[target].append(int(line.split(':')[1]))
 
 
 
@@ -48,25 +54,28 @@ for target in targets:
 		with open(file, "r") as ins:
 			for line in ins:
 				if 'num' in line:
-					mod_cnt[i].append(int(line.split(':')[1]))
+					mod_cnt[target].append(int(line.split(':')[1]))
 				if 'overhead' in line:
-					mod_time[i].append(int(line.split(':')[1]))
+					mod_time[target].append(int(line.split(':')[1]))
 
 
-	i+=1
 
-events_count = []
-for x in range(0,len(targets)):
-	events_count.append(long_cnt[x])
-	events_count.append(mod_cnt[x])
-events_time = []
-for x in range(0,len(targets)):
-	events_time.append(long_time[x])
-	events_time.append(mod_time[x])
-
-print "events count"
-for x in events_count:
-	print x 
-print "events time"
-for x in events_time:
-	print x 
+print "moderate period total scheduling time:"
+for key in mod_time:
+	print key + ' with moderate period:'
+	print mod_time[key]
+print ''
+print "long period total scheduling time:"
+for key in long_time:
+	print key + ' with long period:'
+	print long_time[key]
+print ''
+print "moderate period total scheduling events count:"
+for key in mod_cnt:
+	print key + ' with moderate period:'
+	print mod_cnt[key]
+print ''
+print "long period total scheduling events count:"
+for key in long_cnt:
+	print key + ' with long period:'
+	print long_cnt[key]
